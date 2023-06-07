@@ -2,7 +2,7 @@
   "name": "crazy_orm",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/index.js",
+  "main": "lib/src/index.js",
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
