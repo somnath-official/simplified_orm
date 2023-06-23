@@ -1,3 +1,6 @@
+import pluralize from 'pluralize'
+import { camelCaseToSnakeCase } from '../../lib/strings'
+
 export class Model {
   /**
    * This helps to lock the model method channing
@@ -26,15 +29,15 @@ export class Model {
 
   /**
    * Returns table name.
-   * If $table value is not set then this generates 
-   * table name based on derived class name
+   * If $table value is not set then this generates table name based on derived class name
    * 
    * @returns string
    */
   private createTableNameFromClassName(): string {
-    const modelName: string = this.constructor.name
-    let snake_case = modelName.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`).replace('_', '')
-    return snake_case
+    const derivedClassName: string = this.constructor.name
+    const pluralizedName = pluralize(derivedClassName)
+    const snake_case = camelCaseToSnakeCase(pluralizedName)
+    return snake_case.replace('_', '')  // Replacing initial _ with ''
   }
 
   public get(): this | void {
