@@ -1,7 +1,9 @@
+import { AvaibaleClauses, QueryClauses } from '../@types/ClausesInterface'
+import { build } from '../QueryBuildersHelper/BuildQyery'
 import { buildWhereStatement } from '../QueryBuildersHelper/Where'
-import { createTableNameFromClassName } from '../utils/helper'
+import { createTableNameFromClassName } from '../Utils/helper'
 
-const avaibaleClauses = {
+const avaibaleClauses: AvaibaleClauses = {
   where: 'where',
   orWhere: 'orWhere',
   select: 'select',
@@ -16,11 +18,15 @@ export class Model {
   protected CREATED_AT = 'created_at'
   protected UPDATED_AT = 'updated_at'
   protected DELETED_AT = 'deleted_at'
-  private queryArray: any = []
+  private queryArray: QueryClauses = {
+    select: ['*'],
+    count: [],
+    where: [],
+    orWhere: []
+  }
 
   constructor() {
     this.boot()
-    this.assignQueryClauses()
   }
 
   /**
@@ -30,14 +36,9 @@ export class Model {
     this.$table = createTableNameFromClassName(this.constructor.name)
   }
 
-  private assignQueryClauses(): void {
-    Object.values(avaibaleClauses).forEach((clause: string) => {
-      this.queryArray[`${clause}`] = []
-    })
-  }
-
   public get() {
-    console.log(this)
+    const queryStr = build(this.queryArray, this.$table)
+    console.log(queryStr)
   }
 
   public where(...args: any): this {
